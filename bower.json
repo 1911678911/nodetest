@@ -1,0 +1,28 @@
+{
+  "name": "test",
+  "description": "test bower description",
+  "main": "testmainfile",
+  "authors": [
+    "zmx"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "test"
+  ],
+  "homepage": "test homepage",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+        "angular": "*",
+        "angular-route": "*",
+        "bootstrap": "*",
+        "angular-bootstrap": "*"
+  },
+  "devDependencies": {
+  }
+}

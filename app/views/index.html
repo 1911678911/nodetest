@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bootstrap 实例 - 基本表单</title>
+	<link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+</head>
+<body ng-app="app">
+	<div class="container">
+		<div class="row">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<div class="panel-title">
+						title
+					</div>
+				</div>
+				<div class="panel-body">
+					<form action="" class="form-horizontal">
+						<div class="form-group">
+							<label class="col-md-2">
+								姓名:
+							</label>
+							<div class="col-md-10">
+								<input type="text" name="name" id="name" class="form-control" placeholder="姓名">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2">
+								密码：
+							</label>
+							<div class="col-md-10">
+								<input type="password" name="password" id="password" class="form-control" placeholder="密码">
+							</div>
+
+						</div>
+						<div class="form-group">
+							<div class="col-md-10 col-md-offset-2">
+								<button type="button" class="btn btn-default">button</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<a href="/" class="btn btn-primary btn-lg">Home</a>
+		<a href="/#hello" class="btn btn-danger btn-lg">hello</a>
+		<a href="/#student" class="btn btn-danger btn-lg">student</a>
+		<a href="/#onlogin" class="btn btn-danger btn-lg">onlogin</a>
+		<a href="/#getlogin" class="btn btn-danger btn-lg">getlogin</a>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class=".col-lg-12">
+				<div ng-view></div>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../bower_components/angular-route/angular-route.js"></script>
+<script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="../bower_components/ext/javascripts/angular/app.js"></script>
+<script src="../bower_components/ext/javascripts/angular/controllers.js"></script>
+</html>
