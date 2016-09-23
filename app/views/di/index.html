@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>DI</title>
+	<link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+</head>
+<body ng-app="mainapp" ng-controller="CalcController">
+	<div class="controller">
+		<div class="row">
+			<ion-view ng-init="test=true">
+				<div class="bar bar-header bar-royal">
+					<div class="title">标题党</div>
+				</div>
+				<div class="bar bar-subheader">
+					<div class="button-bar">
+						<a class="button" ng-class="test?'button-positive':''" ng-click="test=true">button1</a>
+						<a class="button" ng-class="!test?'button-positive':''" ng-click="test=false">button2</a>
+					</div>
+				</div>
+				<ion-content class="has-subheader">
+					<div ng-show="test"  ng-include="'../views/di/include/part1.html'"></div>
+					<div ng-show="!test" ng-include="'../views/di/include/part2.html'"></div>
+				</ion-content>
+			</ion-view>
+		</div>
+	</div>
+
+	<h2>简单应用</h2>
+	<div>
+		<p>请输入一个数字：<input type="number" name="number" ng-model="number"></p>
+		<button ng-click="square()" type="button" class="btn btn-default">X<sup>2</sup></button>
+		<p>初始值：{{number}}结果：{{result | myformat}}</p>
+	</div>
+</body>
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../bower_components/angular-route/angular-route.js"></script>
+<script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script type="text/javascript">
+	var mainapp = angular.module('mainapp', []);
+	mainapp.config(function ($provide) {
+		$provide.provider('MathService', function(){
+			this.$get = function(){
+				var factory = {};
+				factory.multiplay = function(a,b){
+					return a*b;
+				}
+				return factory;
+			};
+		});
+		console.log($provide);
+	});
+
+	//value 
+	mainapp.value('defaultInput', 9);
+	//定义service  注入MathService 
+	mainapp.service('CalcServer', function (MathService) {
+		this.square = function(a){
+			return MathService.multiplay(a,a);
+		}
+	});
+	//定义controller
+	mainapp.controller('CalcController', function($scope,CalcServer,defaultInput,hexafy){
+		$scope.number = defaultInput;
+		$scope.result = hexafy.myFunc(CalcServer.square($scope.number));
+
+		$scope.square = function() {
+			$scope.result = hexafy.myFunc(CalcServer.square($scope.number));
+		}
+	});
+	//定义下拉菜单 controller
+	mainapp.controller('template1Controller', ['$scope', 'FooService3',function($scope,FooService3){
+		$scope.tests = [
+		{
+			name: 'test1'
+		}, {
+			name: 'test2'
+		}, {
+			name: 'test2'
+		}
+		];
+		console.log('1');
+		console.log(FooService3.sayHello('functon params ext')); 
+		console.log('2');   	
+	}]);
+
+	//创建自定义服务
+	mainapp.service('hexafy', [function () {
+		this.myFunc = function (x){
+			return x.toString(16);
+		}
+		
+	}]);
+
+	//创建自定义过滤器
+	mainapp.filter('myformat',['hexafy',function(hexafy){
+		return function(x){
+			return hexafy.myFunc(x);
+		}
+	}
+	]);
+
+	//factory service provider三者的关系
+	mainapp.factory('FooService1',function(){
+		return {
+			target :'factory',
+			sayHello: function(){
+				return 'hello' + this.target;
+			}
+		}
+	});
+
+	//通过构造函数方式创建service ,返回一个实例化对象
+	mainapp.service('FooService2', [function () {
+		var self = this;
+		this.target = 'service';
+		this.sayHello = function(){
+			return 'hello' + self.target;
+		}
+	}]);
+    // 创建一个可通过config配置的service,$getz中返回的，就是用factory创建service的内容
+    mainapp.provider('FooService3', [function () {
+    	
+    	this.configData = 'init data';
+    	this.setConfigData = function(data){
+    		if(data){
+    			this.configData = data;
+    		}
+    	}
+    	this.$get = [function() {
+    		var self = this;
+    		return {
+    			target :'provider',
+    			sayHello:function(ext){
+    				return self.configData  +' hello ' +this.target + ext;
+    			}
+    		};
+    	}];
+    }])
+    //此处注入的是FooServie的provider
+    mainapp.config(function(FooService3Provider){
+    	FooService3Provider.setConfigData('config data');
+    });
+</script>
+</html>

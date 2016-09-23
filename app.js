@@ -36,6 +36,12 @@ if ('development' == app.get('env')) {
 app.get('/', function (req, res) {
     res.sendfile('app/views/index.html');
 });
+
+// DI启动页
+app.get('/di', function (req, res) {
+    res.sendfile('app/views/di/index.html');
+});
+
 app.get('/userlist', user.list);
 //别的测试页面
 
