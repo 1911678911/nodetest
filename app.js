@@ -27,6 +27,12 @@ app.use(app.router);
 //设置静态文件目录
 app.use(express.static(path.join(__dirname, 'app')));
 
+var expressSession = require('express-session');
+var mongoStore = require('connect-mongo')({session: expressSession});
+var mongoose = require('mongoose');
+require('./models/users_model');
+ 
+var conn = mongoose.connect('mongodb://localhost/myapptest');
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
@@ -42,9 +48,18 @@ app.get('/di', function (req, res) {
     res.sendfile('app/views/di/index.html');
 });
 
-app.get('/userlist', user.list);
+
 //别的测试页面
 
+app.use(expressSession({
+ secret: 'SECRET',
+ cookie: {maxAge: 60*60*1000},
+ store: new mongoStore({
+     url: 'mongodb://localhost/user',
+     collection: 'sessions'
+   })
+ }));
+user(app);
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
